@@ -94,6 +94,11 @@ public class GamePanel extends JPanel implements ActionListener {
 			gameover(g);
 		}
 	}
+	
+	/*public void loadImages(){
+		ImageIcon iid = new imageicon(getclass().getresource(“/res/dot.png”);
+		ball iid = iid.getImage();*/
+
 
 	public void newApple() {
 		// random apple position
@@ -165,12 +170,7 @@ public class GamePanel extends JPanel implements ActionListener {
 	}
 
 	public void gameover(Graphics g) {
-		// Score display
-		/*g.setColor(Color.black);
-		g.setFont(new Font("Agency FB", Font.BOLD, 35));
-		FontMetrics metrics1 = getFontMetrics(g.getFont());
-		g.drawString("Score: " + SnakeGame.applesEaten, (SCREEN_WIDTH - metrics1.stringWidth("Score: " + SnakeGame.applesEaten)) / 2,
-				g.getFont().getSize());*/
+		
 		// Game Over text
 		g.setColor(Color.black);
 		g.setFont(new Font("Agency FB", Font.BOLD, 75));
@@ -226,6 +226,10 @@ public class GamePanel extends JPanel implements ActionListener {
 					direction = 'D';
 				}
 				break;
+			case KeyEvent.VK_SPACE:
+				 new SnakeGame();
+				 break;
+
 
 			}
 		}

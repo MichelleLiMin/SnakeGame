@@ -12,11 +12,11 @@ public class SnakeGame extends JFrame {
 
 		this.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
-		c.fill = GridBagConstraints.CENTER;
+		c.fill = GridBagConstraints.HORIZONTAL;
 		c.weightx = 0.5;
 		c.gridx = 0;
 		c.gridy = 0;
-		this.getContentPane().add(new GameScore(), c);
+		this.getContentPane().add(new ScorePanel(), c);
 
 		c.fill = GridBagConstraints.CENTER;
 		c.weightx = 0.5;
@@ -29,7 +29,7 @@ public class SnakeGame extends JFrame {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setResizable(false);
 		this.pack();
-		this.setSize(650, 700);
+		this.setSize(650, 750);
 		this.setVisible(true);
 		this.setLocationRelativeTo(null);
 		this.getContentPane().setBackground(new Color(135, 160, 118));
