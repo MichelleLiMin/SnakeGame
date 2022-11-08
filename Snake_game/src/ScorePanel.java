@@ -57,11 +57,11 @@ public class ScorePanel extends JPanel implements ActionListener{
 		//System.out.println(e.toString());
 		
 		if(e.getSource() == timer ) {
-			System.out.println(e.getSource()+ "score");
+			//System.out.println(e.getSource()+ "score");
 			this.scoreLabel.setText("SCORE: " + SnakeGame.applesEaten);
 		}
 		if(e.getSource() == restartButton) {
-			System.out.println(e.getSource() + "restart");
+			//System.out.println(e.getSource() + "restart");
 			new SnakeGame();
 			 SnakeGame.applesEaten = 0;
 		}

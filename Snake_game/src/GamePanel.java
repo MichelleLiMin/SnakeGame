@@ -9,9 +9,9 @@ public class GamePanel extends JPanel implements ActionListener {
 
 	static final int SCREEN_WIDTH = 600;
 	static final int SCREEN_HEIGHT = 600;
-	static final int UNIT_SIZE = 25;
+	static final int UNIT_SIZE = 30;
 	static final int GAME_UNITS = (SCREEN_WIDTH * SCREEN_HEIGHT) / UNIT_SIZE;
-	static final int DELAY = 125;
+	static final int DELAY = 120;
 	final int x[] = new int[GAME_UNITS];
 	final int y[] = new int[GAME_UNITS];
 	int bodyParts = 6;
@@ -24,11 +24,25 @@ public class GamePanel extends JPanel implements ActionListener {
 	// delay before firing its first ActionEvent to registered listeners
 	Timer timer;
 	Random random;
+	private Image bodyH;
+	private Image bodyV;
+	private Image apple;
+	private Image headU;
+	private Image headD;
+	private Image headR;
+	private Image headL;
+	private Image tailU;
+	private Image tailD;
+	private Image tailR;
+	private Image tailL;
+	private Image cornerTR;
+	private Image cornerTL;
+	private Image cornerBR;
+	private Image cornerBL;
 
 	public GamePanel() {
 		random = new Random();
-		 
-		
+
 		this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
 		this.setBackground(new Color(135, 160, 118));
 
@@ -37,6 +51,7 @@ public class GamePanel extends JPanel implements ActionListener {
 		this.setBorder(BorderFactory.createStrokeBorder(new BasicStroke(2.0f)));
 		this.setFocusable(true);
 		this.addKeyListener(new MyKeyAdapter());
+		loadImages();
 		startGame();
 	}
 
@@ -51,19 +66,53 @@ public class GamePanel extends JPanel implements ActionListener {
 
 	// paintComponent is called "when it needs to be."
 	public void paintComponent(Graphics g) {
-	
+
 		super.paintComponent(g);
 		g.setColor(Color.black);
-		/*Graphics2D g2d = (Graphics2D) g;
-		g2d.setStroke(new BasicStroke(3.0F));*/
+		/*
+		 * Graphics2D g2d = (Graphics2D) g; g2d.setStroke(new BasicStroke(3.0F));
+		 */
 		draw(g);
 
+	}
+
+	public void loadImages() {
+		ImageIcon app = new ImageIcon(getClass().getResource("apple.png"));
+		apple = app.getImage();
+		ImageIcon headRR = new ImageIcon(getClass().getResource("headR.png"));
+		headR = headRR.getImage();
+		ImageIcon headLL = new ImageIcon(getClass().getResource("headL.png"));
+		headL = headLL.getImage();
+		ImageIcon headUU = new ImageIcon(getClass().getResource("headU.png"));
+		headU = headUU.getImage();
+		ImageIcon headDD = new ImageIcon(getClass().getResource("headD.png"));
+		headD = headDD.getImage();
+		ImageIcon bodyHH = new ImageIcon(getClass().getResource("bodyH.png"));
+		bodyH = bodyHH.getImage();
+		ImageIcon bodyVV = new ImageIcon(getClass().getResource("bodyV.png"));
+		bodyV = bodyVV.getImage();
+		ImageIcon tailRR = new ImageIcon(getClass().getResource("tailR.png"));
+		tailR = tailRR.getImage();
+		ImageIcon tailLL = new ImageIcon(getClass().getResource("tailL.png"));
+		tailL = tailLL.getImage();
+		ImageIcon tailUU = new ImageIcon(getClass().getResource("tailU.png"));
+		tailU = tailUU.getImage();
+		ImageIcon tailDD = new ImageIcon(getClass().getResource("tailD.png"));
+		tailD = tailDD.getImage();
+		ImageIcon cornerTTR = new ImageIcon(getClass().getResource("cornerTR.png"));
+		cornerTR = cornerTTR.getImage();
+		ImageIcon cornerTTL = new ImageIcon(getClass().getResource("cornerTL.png"));
+		cornerTL = cornerTTL.getImage();
+		ImageIcon cornerBBL = new ImageIcon(getClass().getResource("cornerBL.png"));
+		cornerBL = cornerBBL.getImage();
+		ImageIcon cornerBBR = new ImageIcon(getClass().getResource("cornerBR.png"));
+		cornerBR = cornerBBR.getImage();
 	}
 
 	public void draw(Graphics g) {
 		if (running) {
 			// draw grid
-			
+			// to do grid color pattern
 			for (int i = 0; i < SCREEN_HEIGHT / UNIT_SIZE; i++) {
 
 				g.drawLine(i * UNIT_SIZE, 0, i * UNIT_SIZE, SCREEN_HEIGHT);
@@ -71,21 +120,82 @@ public class GamePanel extends JPanel implements ActionListener {
 
 			}
 			// draw apple
-			g.setColor(Color.red);
-			g.fillOval(appleX, appleY, UNIT_SIZE, UNIT_SIZE);
+			g.drawImage(apple, appleX, appleY, UNIT_SIZE, UNIT_SIZE, this);
 			// draw snake
 			for (int i = 0; i < bodyParts; i++) {
 				if (i == 0) {
 					// snake head
-					g.setColor(Color.blue);
-					g.fillRoundRect(x[0], y[0], UNIT_SIZE, UNIT_SIZE, 17, 17);
-					
+					if (direction == 'R') {
+						System.out.println(y[0]);
+						g.drawImage(headR, x[i], y[i], UNIT_SIZE, UNIT_SIZE, this);
 
-				} else {
+					} else if (direction == 'D') {
+						System.out.println(x[0]);
+						g.drawImage(headD, x[i], y[i], UNIT_SIZE, UNIT_SIZE, this);
+
+					} else if (direction == 'L') {
+						g.drawImage(headL, x[i], y[i], UNIT_SIZE, UNIT_SIZE, this);
+
+					} else if (direction == 'U') {
+						g.drawImage(headU, x[i], y[i], UNIT_SIZE, UNIT_SIZE, this);
+
+					}
+
+				} else if (i == bodyParts - 1) {
+					// snake tail
+					if ((y[i] == y[i - 1]) && (x[i] > x[i - 1])) {
+						g.drawImage(tailL, x[i], y[i], UNIT_SIZE, UNIT_SIZE, this);
+					} else if ((y[i] == y[i - 1]) && (x[i] < x[i - 1])) {
+						g.drawImage(tailR, x[i], y[i], UNIT_SIZE, UNIT_SIZE, this);
+					} else if ((x[i] == x[i - 1]) && (y[i] > y[i - 1])) {
+						g.drawImage(tailU, x[i], y[i], UNIT_SIZE, UNIT_SIZE, this);
+					} else if ((x[i] == x[i - 1]) && (y[i] < y[i - 1])) {
+						g.drawImage(tailD, x[i], y[i], UNIT_SIZE, UNIT_SIZE, this);
+					}
+				}
+
+				else {
 					// snake body
-					g.setColor(Color.black);
-					// paint background
-					g.fillRoundRect(x[i], y[i], UNIT_SIZE, UNIT_SIZE, 17, 17);
+
+					// top right corner
+					if (((x[i] > x[i - 1]) && (y[i] < y[i + 1]) )
+							| ((x[i] > x[i + 1]) && (y[i] < y[i - 1]))) {
+						System.out.println("top right");
+						g.drawImage(cornerTR, x[i], y[i], UNIT_SIZE, UNIT_SIZE, this);
+
+					}
+					// bottom right corner
+					else if (((x[i] > x[i - 1]) && (y[i] > y[i + 1]) )
+					| ((x[i] > x[i + 1]) && (y[i] > y[i - 1]))) {
+						System.out.println("bottom right");
+						g.drawImage(cornerBR, x[i], y[i], UNIT_SIZE, UNIT_SIZE, this);
+
+					}
+					// top left corner
+					else if (((x[i] < x[i - 1]) && (y[i] < y[i + 1]) )
+					| ((x[i] < x[i + 1]) && (y[i] < y[i - 1]))) {
+						System.out.println("top left");
+						g.drawImage(cornerTL, x[i], y[i], UNIT_SIZE, UNIT_SIZE, this);
+
+					}
+					// bottom left corner
+					else if (((x[i] < x[i + 1]) && (y[i] > y[i - 1]) )
+					| ((x[i] < x[i - 1]) && (y[i] > y[i + 1]))) {
+						System.out.println("bottom left");
+						g.drawImage(cornerBL, x[i], y[i], UNIT_SIZE, UNIT_SIZE, this);
+
+					}
+					// body horizontal
+					else if (y[i] == y[i - 1])
+							{
+						g.drawImage(bodyH, x[i], y[i], UNIT_SIZE, UNIT_SIZE, this);
+					}
+					// body vertical
+					else if (x[i] == x[i - 1]) {
+						g.drawImage(bodyV, x[i], y[i], UNIT_SIZE, UNIT_SIZE, this);
+
+					}
+
 				}
 			}
 
@@ -94,11 +204,6 @@ public class GamePanel extends JPanel implements ActionListener {
 			gameover(g);
 		}
 	}
-	
-	/*public void loadImages(){
-		ImageIcon iid = new imageicon(getclass().getresource(“/res/dot.png”);
-		ball iid = iid.getImage();*/
-
 
 	public void newApple() {
 		// random apple position
@@ -115,18 +220,18 @@ public class GamePanel extends JPanel implements ActionListener {
 		}
 		// define move direction
 		switch (direction) {
-		case 'U':
-			y[0] = y[0] - UNIT_SIZE;
-			break;
-		case 'D':
-			y[0] = y[0] + UNIT_SIZE;
-			break;
-		case 'L':
-			x[0] = x[0] - UNIT_SIZE;
-			break;
-		case 'R':
-			x[0] = x[0] + UNIT_SIZE;
-			break;
+			case 'U':
+				y[0] = y[0] - UNIT_SIZE;
+				break;
+			case 'D':
+				y[0] = y[0] + UNIT_SIZE;
+				break;
+			case 'L':
+				x[0] = x[0] - UNIT_SIZE;
+				break;
+			case 'R':
+				x[0] = x[0] + UNIT_SIZE;
+				break;
 		}
 	}
 
@@ -135,7 +240,7 @@ public class GamePanel extends JPanel implements ActionListener {
 		if ((x[0] == appleX) && (y[0] == appleY)) {
 			bodyParts++;
 			SnakeGame.applesEaten++;
-			System.out.println(SnakeGame.applesEaten);
+			// System.out.println(SnakeGame.applesEaten);
 			newApple();
 		}
 	}
@@ -170,7 +275,7 @@ public class GamePanel extends JPanel implements ActionListener {
 	}
 
 	public void gameover(Graphics g) {
-		
+
 		// Game Over text
 		g.setColor(Color.black);
 		g.setFont(new Font("Agency FB", Font.BOLD, 75));
@@ -203,37 +308,35 @@ public class GamePanel extends JPanel implements ActionListener {
 	public class MyKeyAdapter extends KeyAdapter {
 		@Override
 		public void keyPressed(KeyEvent e) {
-			
-			switch (e.getKeyCode()) {
-			// cannot turn 180 degree
-			case KeyEvent.VK_LEFT:
-				if (direction != 'R') {
-					direction = 'L';
-				}
-				break;
-			case KeyEvent.VK_RIGHT:
-				if (direction != 'L') {
-					direction = 'R';
-				}
-				break;
-			case KeyEvent.VK_UP:
-				if (direction != 'D') {
-					direction = 'U';
-				}
-				break;
-			case KeyEvent.VK_DOWN:
-				if (direction != 'U') {
-					direction = 'D';
-				}
-				break;
-			case KeyEvent.VK_SPACE:
-				 new SnakeGame();
-				 break;
 
+			switch (e.getKeyCode()) {
+				// cannot turn 180 degree
+				case KeyEvent.VK_LEFT:
+					if (direction != 'R') {
+						direction = 'L';
+					}
+					break;
+				case KeyEvent.VK_RIGHT:
+					if (direction != 'L') {
+						direction = 'R';
+					}
+					break;
+				case KeyEvent.VK_UP:
+					if (direction != 'D') {
+						direction = 'U';
+					}
+					break;
+				case KeyEvent.VK_DOWN:
+					if (direction != 'U') {
+						direction = 'D';
+					}
+					break;
+				case KeyEvent.VK_SPACE:
+					new SnakeGame();
+					break;
 
 			}
 		}
 	}
-
 
 }
