@@ -26,7 +26,6 @@ public class GamePanel extends JPanel implements ActionListener {
 	Random random;
 	private Image bodyH;
 	private Image bodyV;
-	private Image apple;
 	private Image headU;
 	private Image headD;
 	private Image headR;
@@ -39,16 +38,16 @@ public class GamePanel extends JPanel implements ActionListener {
 	private Image cornerTL;
 	private Image cornerBR;
 	private Image cornerBL;
+	private Image apple;
 
 	public GamePanel() {
 		random = new Random();
 
 		this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
-		this.setBackground(new Color(135, 160, 118));
+		this.setBackground(new Color(86, 136, 57));
 
-		// setBorder(BorderFactory.createCompoundBorder(BorderFactory.createRaisedBevelBorder(),
-		// BorderFactory.createLoweredBevelBorder()));
-		this.setBorder(BorderFactory.createStrokeBorder(new BasicStroke(2.0f)));
+		
+		//this.setBorder(BorderFactory.createStrokeBorder(new BasicStroke(2.0f)));
 		this.setFocusable(true);
 		this.addKeyListener(new MyKeyAdapter());
 		loadImages();
@@ -113,11 +112,17 @@ public class GamePanel extends JPanel implements ActionListener {
 		if (running) {
 			// draw grid
 			// to do grid color pattern
-			for (int i = 0; i < SCREEN_HEIGHT / UNIT_SIZE; i++) {
+			for (int row = 0; row < SCREEN_HEIGHT / UNIT_SIZE; row++) {
 
-				g.drawLine(i * UNIT_SIZE, 0, i * UNIT_SIZE, SCREEN_HEIGHT);
-				g.drawLine(0, i * UNIT_SIZE, SCREEN_WIDTH, i * UNIT_SIZE);
+				for (int col = 0; col < SCREEN_HEIGHT / UNIT_SIZE; col++) {
+					if ((col + row) % 2 != 0) {
+						g.setColor(new Color(161, 209, 74));
+					} else {
+						g.setColor(new Color(170, 215, 82));
+					}
+					g.fillRect(col * UNIT_SIZE, row * UNIT_SIZE, UNIT_SIZE, UNIT_SIZE);
 
+				}
 			}
 			// draw apple
 			g.drawImage(apple, appleX, appleY, UNIT_SIZE, UNIT_SIZE, this);
@@ -126,11 +131,11 @@ public class GamePanel extends JPanel implements ActionListener {
 				if (i == 0) {
 					// snake head
 					if (direction == 'R') {
-						System.out.println(y[0]);
+						// System.out.println(y[0]);
 						g.drawImage(headR, x[i], y[i], UNIT_SIZE, UNIT_SIZE, this);
 
 					} else if (direction == 'D') {
-						System.out.println(x[0]);
+						// System.out.println(x[0]);
 						g.drawImage(headD, x[i], y[i], UNIT_SIZE, UNIT_SIZE, this);
 
 					} else if (direction == 'L') {
@@ -158,36 +163,31 @@ public class GamePanel extends JPanel implements ActionListener {
 					// snake body
 
 					// top right corner
-					if (((x[i] > x[i - 1]) && (y[i] < y[i + 1]) )
-							| ((x[i] > x[i + 1]) && (y[i] < y[i - 1]))) {
-						System.out.println("top right");
+					if (((x[i] > x[i - 1]) && (y[i] < y[i + 1])) | ((x[i] > x[i + 1]) && (y[i] < y[i - 1]))) {
+						// System.out.println("top right");
 						g.drawImage(cornerTR, x[i], y[i], UNIT_SIZE, UNIT_SIZE, this);
 
 					}
 					// bottom right corner
-					else if (((x[i] > x[i - 1]) && (y[i] > y[i + 1]) )
-					| ((x[i] > x[i + 1]) && (y[i] > y[i - 1]))) {
-						System.out.println("bottom right");
+					else if (((x[i] > x[i - 1]) && (y[i] > y[i + 1])) | ((x[i] > x[i + 1]) && (y[i] > y[i - 1]))) {
+						// System.out.println("bottom right");
 						g.drawImage(cornerBR, x[i], y[i], UNIT_SIZE, UNIT_SIZE, this);
 
 					}
 					// top left corner
-					else if (((x[i] < x[i - 1]) && (y[i] < y[i + 1]) )
-					| ((x[i] < x[i + 1]) && (y[i] < y[i - 1]))) {
-						System.out.println("top left");
+					else if (((x[i] < x[i - 1]) && (y[i] < y[i + 1])) | ((x[i] < x[i + 1]) && (y[i] < y[i - 1]))) {
+						// System.out.println("top left");
 						g.drawImage(cornerTL, x[i], y[i], UNIT_SIZE, UNIT_SIZE, this);
 
 					}
 					// bottom left corner
-					else if (((x[i] < x[i + 1]) && (y[i] > y[i - 1]) )
-					| ((x[i] < x[i - 1]) && (y[i] > y[i + 1]))) {
-						System.out.println("bottom left");
+					else if (((x[i] < x[i + 1]) && (y[i] > y[i - 1])) | ((x[i] < x[i - 1]) && (y[i] > y[i + 1]))) {
+						// System.out.println("bottom left");
 						g.drawImage(cornerBL, x[i], y[i], UNIT_SIZE, UNIT_SIZE, this);
 
 					}
 					// body horizontal
-					else if (y[i] == y[i - 1])
-							{
+					else if (y[i] == y[i - 1]) {
 						g.drawImage(bodyH, x[i], y[i], UNIT_SIZE, UNIT_SIZE, this);
 					}
 					// body vertical
@@ -220,18 +220,18 @@ public class GamePanel extends JPanel implements ActionListener {
 		}
 		// define move direction
 		switch (direction) {
-			case 'U':
-				y[0] = y[0] - UNIT_SIZE;
-				break;
-			case 'D':
-				y[0] = y[0] + UNIT_SIZE;
-				break;
-			case 'L':
-				x[0] = x[0] - UNIT_SIZE;
-				break;
-			case 'R':
-				x[0] = x[0] + UNIT_SIZE;
-				break;
+		case 'U':
+			y[0] = y[0] - UNIT_SIZE;
+			break;
+		case 'D':
+			y[0] = y[0] + UNIT_SIZE;
+			break;
+		case 'L':
+			x[0] = x[0] - UNIT_SIZE;
+			break;
+		case 'R':
+			x[0] = x[0] + UNIT_SIZE;
+			break;
 		}
 	}
 
@@ -257,7 +257,7 @@ public class GamePanel extends JPanel implements ActionListener {
 			running = false;
 		}
 		// check if head touches right border
-		if (x[0] > SCREEN_WIDTH) {
+		if (x[0] >= SCREEN_WIDTH) {
 			running = false;
 		}
 		// check if head touches top border
@@ -265,7 +265,7 @@ public class GamePanel extends JPanel implements ActionListener {
 			running = false;
 		}
 		// check if head touches bottom border
-		if (y[0] > SCREEN_HEIGHT) {
+		if (y[0] >= SCREEN_HEIGHT) {
 			running = false;
 		}
 		if (!running) {
@@ -275,6 +275,19 @@ public class GamePanel extends JPanel implements ActionListener {
 	}
 
 	public void gameover(Graphics g) {
+		// draw grid
+		for (int row = 0; row < SCREEN_HEIGHT / UNIT_SIZE; row++) {
+
+			for (int col = 0; col < SCREEN_HEIGHT / UNIT_SIZE; col++) {
+				if ((col + row) % 2 != 0) {
+					g.setColor(new Color(161, 209, 74));
+				} else {
+					g.setColor(new Color(170, 215, 82));
+				}
+				g.fillRect(col * UNIT_SIZE, row * UNIT_SIZE, UNIT_SIZE, UNIT_SIZE);
+
+			}
+		}
 
 		// Game Over text
 		g.setColor(Color.black);
@@ -310,30 +323,30 @@ public class GamePanel extends JPanel implements ActionListener {
 		public void keyPressed(KeyEvent e) {
 
 			switch (e.getKeyCode()) {
-				// cannot turn 180 degree
-				case KeyEvent.VK_LEFT:
-					if (direction != 'R') {
-						direction = 'L';
-					}
-					break;
-				case KeyEvent.VK_RIGHT:
-					if (direction != 'L') {
-						direction = 'R';
-					}
-					break;
-				case KeyEvent.VK_UP:
-					if (direction != 'D') {
-						direction = 'U';
-					}
-					break;
-				case KeyEvent.VK_DOWN:
-					if (direction != 'U') {
-						direction = 'D';
-					}
-					break;
-				case KeyEvent.VK_SPACE:
-					new SnakeGame();
-					break;
+			// cannot turn 180 degree
+			case KeyEvent.VK_LEFT:
+				if (direction != 'R') {
+					direction = 'L';
+				}
+				break;
+			case KeyEvent.VK_RIGHT:
+				if (direction != 'L') {
+					direction = 'R';
+				}
+				break;
+			case KeyEvent.VK_UP:
+				if (direction != 'D') {
+					direction = 'U';
+				}
+				break;
+			case KeyEvent.VK_DOWN:
+				if (direction != 'U') {
+					direction = 'D';
+				}
+				break;
+			case KeyEvent.VK_SPACE:
+				new SnakeGame();
+				break;
 
 			}
 		}

@@ -16,6 +16,7 @@ public class SnakeGame extends JFrame {
 		c.weightx = 0.5;
 		c.gridx = 0;
 		c.gridy = 0;
+		c.insets = new Insets(0, 10, 0, 30); // top padding
 		this.getContentPane().add(new ScorePanel(), c);
 
 		c.fill = GridBagConstraints.CENTER;
@@ -32,7 +33,7 @@ public class SnakeGame extends JFrame {
 		this.setSize(650, 750);
 		this.setVisible(true);
 		this.setLocationRelativeTo(null);
-		this.getContentPane().setBackground(new Color(135, 160, 118));
+		this.getContentPane().setBackground(new Color(86, 136, 57));
 	}
 
 	public static void main(String[] args) {
