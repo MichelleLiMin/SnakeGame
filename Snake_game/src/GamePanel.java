@@ -11,7 +11,7 @@ public class GamePanel extends JPanel implements ActionListener {
 	static final int SCREEN_HEIGHT = 600;
 	static final int UNIT_SIZE = 30;
 	static final int GAME_UNITS = (SCREEN_WIDTH * SCREEN_HEIGHT) / UNIT_SIZE;
-	static final int DELAY = 120;
+	static final int DELAY = 130;
 	final int x[] = new int[GAME_UNITS];
 	final int y[] = new int[GAME_UNITS];
 	int bodyParts = 6;
@@ -346,6 +346,7 @@ public class GamePanel extends JPanel implements ActionListener {
 				break;
 			case KeyEvent.VK_SPACE:
 				new SnakeGame();
+				SnakeGame.applesEaten = 0;
 				break;
 
 			}
